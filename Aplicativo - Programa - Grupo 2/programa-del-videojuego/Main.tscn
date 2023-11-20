@@ -1,0 +1,101 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/Main.gd" type="Script" id=2]
+[ext_resource path="res://Fonts/Transformers Movie.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Music/mainMusic.mp3" type="AudioStream" id=4]
+[ext_resource path="res://Sounds/shipImpact.mp3" type="AudioStream" id=5]
+[ext_resource path="res://images/1.jpg" type="Texture" id=6]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 6, 307 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 9, 306 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 36
+use_filter = true
+font_data = ExtResource( 3 )
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="KinematicBody2D" parent="." instance=ExtResource( 1 )]
+position = Vector2( 515, 521 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="limits" type="Node2D" parent="."]
+
+[node name="leftLimit" type="StaticBody2D" parent="limits"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="limits/leftLimit"]
+position = Vector2( 5, 308 )
+shape = SubResource( 1 )
+
+[node name="rightLimit" type="StaticBody2D" parent="limits"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="limits/rightLimit"]
+position = Vector2( 1023, 304 )
+shape = SubResource( 2 )
+
+[node name="hud" type="Node2D" parent="."]
+
+[node name="Puntos" type="Label" parent="hud"]
+margin_left = 686.0
+margin_top = 42.0
+margin_right = 804.0
+margin_bottom = 70.0
+custom_fonts/font = SubResource( 3 )
+text = "Puntos:"
+
+[node name="PuntosValor" type="Label" parent="hud"]
+margin_left = 818.0
+margin_top = 40.0
+margin_right = 922.0
+margin_bottom = 68.0
+rect_pivot_offset = Vector2( -42, 102 )
+custom_fonts/font = SubResource( 3 )
+text = "0"
+
+[node name="Record" type="Label" parent="hud"]
+margin_left = 684.0
+margin_top = 90.0
+margin_right = 1085.0
+margin_bottom = 125.0
+custom_fonts/font = SubResource( 3 )
+text = "Record:"
+
+[node name="PuntajeRecord" type="Label" parent="hud"]
+margin_left = 820.0
+margin_top = 91.0
+margin_right = 994.0
+margin_bottom = 126.0
+rect_pivot_offset = Vector2( -42, 102 )
+custom_fonts/font = SubResource( 3 )
+text = "0"
+
+[node name="music" type="Node2D" parent="."]
+
+[node name="mainMusic" type="AudioStreamPlayer" parent="music"]
+stream = ExtResource( 4 )
+volume_db = -10.0
+
+[node name="sounds" type="Node2D" parent="."]
+
+[node name="enemyImpact" type="AudioStreamPlayer" parent="sounds"]
+stream = ExtResource( 5 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 0, 610 )
+
+[node name="background" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2( 517.75, 307 )
+scale = Vector2( 0.592709, 0.62449 )
+texture = ExtResource( 6 )
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
